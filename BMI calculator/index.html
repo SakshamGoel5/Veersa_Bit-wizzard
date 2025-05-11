@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BMI Buddy</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+  <style>
+    #bmi-result-image {
+      margin-bottom: 5%;
+      margin-left: 5%;
+      max-width: fit-content; /* Full height of parent */
+      object-fit: cover; /* Crop & fill while maintaining aspect ratio */
+      border-top-left-radius: 0.5rem; /* To match rounded corners */
+      border-bottom-left-radius: 0.5rem;
+    }
+    
+    @media (max-width: 300px) {
+      #bmi-result-image {
+        width: auto; /* Full width for small screens */
+        height: 100%; /* Auto height for mobile */
+        border-radius: 0.5rem; /* Reset rounded corners */
+      }
+    }
+    
+    .gauge {
+      width: 80%;
+      aspect-ratio: 1.7 / 1;
+      /* Ensures perfect half circle */
+      background: conic-gradient(#28a745 0% 33%, #ffc107 33% 66%, #dc3545 66% 100%);
+      border-top-left-radius: 50%;
+      border-top-right-radius: 50%;
+      overflow: hidden;
+      position:relative;
+      margin:auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .needle {
+      width: 1%;
+      /* Thin needle, adjusts with size */
+      height: 100%;
+      background: #000;
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform-origin: bottom center;
+      transform: rotate(0deg);
+      transition: transform 0.5s ease-in-out;
+      clip-path: polygon(0% 100%, 100% 100%, 20% 0%, 10% 0%);
+    }
+
+
+
+    .bmi-labels {
+      width: 80%;
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      margin-top: 5px;
+      margin-left: 5%;
+      margin-right: 5%;
+    }
+  </style>
+</head>
+
+<body class="bg-light">
+  <header class="bg-white shadow-sm py-3">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <!-- Logo -->
+            <a class="navbar-brand fw-bold notranslate" href="#">
+                <span class="fs-3 text-warning">M</span><span class="fs-4">ediHub</span>
+            </a>
+
+            <!-- Navbar Toggle Button (☰ / ✖) -->
+            <button class="navbar-toggler border-0" id="navbar-toggler" type="button" aria-expanded="false">
+                <i class="fas fa-bars fs-3" id="menu-icon"></i>
+            </button>
+
+            <!-- Navbar Links -->
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link text-dark" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link text-dark" href="https://medihub-ver1.vercel.app/" target="_blank">Telemedicine</a></li>
+                    <li class="nav-item"><a class="nav-link text-dark" href="https://medihub-chatbot.vercel.app/" target="_blank">Chatbot</a></li>
+                    <li class="nav-item"><a class="nav-link text-dark" href="/BMI calculator/index.html" target="_blank">BMI Buddy</a></li>
+                    <li class="nav-item"><a class="nav-link text-dark" href="/index.html?scrollTo=#map1" >Nearby Hospitals</a></li>
+                    <li class="nav-item"><a class="nav-link text-dark" href="/about_us_page/index.html">About us</a></li>
+                </ul>
+
+                <!-- Language Dropdown -->
+                <div class="dropdown">
+                    <button class="btn btn-light text-primary d-flex align-items-center rounded-pill dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="fas fa-globe me-2"></i> Language
+                    </button>
+                    
+                    <!-- <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        🌍 Language
+                    </button> -->
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#" onclick="changeLanguage('en')">English</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="changeLanguage('hi')">हिन्दी</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="changeLanguage('mr')">मराठी</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+<!-- Google Translate Element -->
+<div id="google_translate_element" style="display: none;"></div>
+
+  <div class="container py-4">
+    <div class="text-center mb-4">
+      <i class="fas fa-heartbeat fs-2 text-secondary"></i>
+      <h1 class="fs-3 fw-semibold text-secondary">BMI Buddy</h1>
+    </div>
+
+    <!-- Input Card -->
+    <div class="d-flex justify-content-center mb-4">
+      <div class="bg-white p-4 rounded shadow w-100">
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <input class="form-control" placeholder="Height (cm)" id="height" type="text" required/>
+          </div>
+          <div class="col-md-6">
+            <input class="form-control" placeholder="Age" type="text" />
+          </div>
+          <div class="col-md-6">
+            <input class="form-control" placeholder="Weight (kg)" id="weight" type="text" required/>
+          </div>
+          <div class="col-md-6">
+            <select class="form-select" id="gender">
+              <option value="">Select Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn btn-dark w-100" onclick="calculateBMI()">Calculate BMI!</button>
+      </div>
+    </div>
+
+    <!-- BMI Result Card -->
+    <div
+      class="bg-white p-0 rounded shadow mb-4 d-flex flex-column flex-md-row align-items-center w-100 position-relative">
+      <img alt="Illustration" class="img-fluid w-50 mb-3 mb-md-0" src="/BMI calculator/images/default.png" id="bmi-result-image" />
+      <div class="text-center w-100 ms-md-4 position-relative">
+        <h2 class="fs-2 fw-semibold text-secondary mb-2" id="bmi-value">--</h2>
+        <p class="text-muted mb-3" id="bmi-message">Enter your Weight and height And Click on Calculate BMI Button</p>
+
+        <!-- Gauge Indicator -->
+        <div class="gauge">
+          <div class="needle" id="needle"></div>
+        </div>
+        <div class="bmi-labels">
+          <span>Under</span>
+          <span>Normal</span>
+          <span>Over</span>
+        </div>
+
+        <div class="d-flex justify-content-center gap-3 mt-3">
+          <a class="text-secondary" href="#"><i class="fab fa-facebook"></i></a>
+          <a class="text-secondary" href="#"><i class="fab fa-whatsapp"></i></a>
+          <a class="text-secondary" href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recommendations -->
+    <div class="bg-white p-4 rounded shadow mb-4 w-100">
+      <h3 class="fs-4 fw-semibold text-secondary mb-3">Recommendations</h3>
+      <div class="row g-3">
+        <div class="col-md-4 d-flex align-items-start">
+          <i class="fas fa-apple-alt fs-2 text-secondary me-3"></i>
+          <div>
+            <h4 class="fs-5 fw-semibold text-secondary">Diet Tips</h4>
+            <p class="text-muted" id="diet-tip">Maintain a balanced diet rich in proteins and vegetables.</p>
+          </div>
+        </div>
+        <div class="col-md-4 d-flex align-items-start">
+          <i class="fas fa-dumbbell fs-2 text-secondary me-3"></i>
+          <div>
+            <h4 class="fs-5 fw-semibold text-secondary">Exercise Plan</h4>
+            <p class="text-muted" id="exercise-tip">30 minutes of moderate exercise daily.</p>
+          </div>
+        </div>
+        <div class="col-md-4 d-flex align-items-start">
+          <i class="fas fa-bed fs-2 text-secondary me-3"></i>
+          <div>
+            <h4 class="fs-5 fw-semibold text-secondary">Lifestyle</h4>
+            <p class="text-muted" id="lifestyle-tip">Get 7-8 hours of quality sleep.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Goal Setter -->
+    <div class="bg-white p-4 rounded shadow mb-4 text-center w-100">
+      <p class="text-muted mb-3">
+        Would you like to make your BMI in normal range? Click here to get goal setters as per your time range diet
+        plans.
+      </p>
+      <button class="btn btn-dark" onclick="showGoals()">Set Goal</button>
+
+      <!-- Hidden goal points -->
+      <div id="goal-points" class="text-start mt-4" style="display: none;">
+        <h5 class="fw-semibold mb-3">Your Daily Goals:</h5>
+        <ul id="goal-list" class="list-unstyled">
+          <!-- Dynamic bullet points will be inserted here -->
+        </ul>
+      </div>
+    </div>
+
+
+    <!-- Buttons -->
+    <div class="d-flex justify-content-center gap-3 mb-4 w-100">
+      <button  class="btn btn-dark w-100" onclick="showChart('female')">Weight-Specific BMI Chart</button>
+      <button class="btn btn-dark w-100" onclick="showChart('male')">Age-Specific BMI Chart</button>
+    </div>
+    
+    <!-- BMI Chart Image -->
+    <div class="bg-white p-4 rounded shadow mb-4 w-100 text-center">
+      <h3 class="fs-4 fw-semibold text-secondary mb-3" id="BMI-chart-name"></h3>
+      <img id="bmi-chart" src="" alt="" class="img-fluid w-100" style="max-width:500px;" />
+    </div>
+    
+    
+  </div>
+
+  <footer class="bg-dark text-white py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <h5>Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li><a href="/" class="text-white text-decoration-none">Home</a></li>
+                    <li><a class="text-white text-decoration-none" href="https://medihub-ver1.vercel.app/" target="_blank">Telemedicine</a></li>
+                    <li><a class="text-white text-decoration-none" href="https://medihub-chatbot.vercel.app/" target="_blank">Chatbot</a></li>
+                    <li><a class="text-white text-decoration-none"href="\BMI calculator\index.html" target="_blank">BMI Buddy</a></li>
+                    <li><a class="text-white text-decoration-none" href="/index.html?scrollTo=#map1">NearBy Hospital</a></li>
+                    <li><a href="/about_us_page/index.html" class="text-white text-decoration-none">About</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <h5>Connect With Us</h5>
+                <div>
+                    <a href="#" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-white me-2"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-white me-2"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="text-white me-2"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <h5>Contact</h5>
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-envelope me-2"></i> contact :-medihub661@gmail.com</li>
+                    <li><i class="fas fa-phone me-2"></i> +91 12345 67891</li>
+                    <li><i class="fas fa-map-marker-alt me-2"></i> 123 Health Street, Medical District</li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <h5>Legal</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#" class="text-white text-decoration-none">Privacy Policy</a></li>
+                    <li><a href="#" class="text-white text-decoration-none">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="text-center mt-3">
+            <p>© 2025 TeleHealth. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+
+  <script>
+    window.onload = function() {
+      showChart('female'); 
+    };
+    function showChart(type) {
+      const chart = document.getElementById('bmi-chart');
+      const name = document.getElementById("BMI-chart-name");
+      if (type === 'female') {
+        name.innerText = "Weight-Specific BMI Chart";
+        chart.src = '/BMI calculator/images/weightbmi.png';
+      } else {
+        name.innerText = "Age-Specific BMI Chart";
+        chart.src = "/BMI calculator/images/agebmi.png";
+      }
+    }    
+    let bmicalculated = false;
+    function calculateBMI() {
+      const height = document.getElementById('height').value;
+      const weight = document.getElementById('weight').value;
+      const bmiValue = document.getElementById('bmi-value');
+      const bmiMessage = document.getElementById('bmi-message');
+      const needle = document.getElementById('needle');
+
+      const gender = document.getElementById('gender').value;
+      const bmiImage = document.getElementById('bmi-result-image');
+      let imagePath = "/BMI calculator/images/default.png";
+
+      const goalList = document.getElementById('goal-list');
+      const goalPointsDiv = document.getElementById('goal-points');
+      goalList.innerHTML = ''; // Clear list items
+      goalPointsDiv.style.display = 'none'; // Hide the goals section
+
+
+      if (height && weight) {
+        const bmi = (weight / ((height / 100) ** 2)).toFixed(1);
+        bmiValue.innerText = bmi;
+        bmicalculated = true;
+
+        // Target recommendation elements
+        const dietTip = document.getElementById('diet-tip');
+        const exerciseTip = document.getElementById('exercise-tip');
+        const lifestyleTip = document.getElementById('lifestyle-tip');
+
+        if (bmi < 18.5) {
+          bmiMessage.innerText = "Underweight";
+          needle.style.transform = "rotate(-45deg)";
+
+          bmiImage.src = gender === "male" ? "/BMI calculator/images/male-underweight.jpeg" : "/BMI calculator/images/female-underweight.jpeg";
+          
+
+          // Recommendations for Underweight
+          dietTip.innerText = "Increase calorie intake with healthy fats and carbs.";
+          exerciseTip.innerText = "Focus on strength training to build muscle.";
+          lifestyleTip.innerText = "Get plenty of rest and avoid excessive cardio.";
+
+        } else if (bmi < 25) {
+          bmiMessage.innerText = "Normal weight";
+          needle.style.transform = "rotate(0deg)";
+
+
+          bmiImage.src = gender === "male" ? "/BMI calculator/images/male-normalweight.jpeg" : "/BMI calculator/images/female-normalweight.jpeg";
+          
+
+          // Recommendations for Normal weight
+          dietTip.innerText = "Maintain a balanced diet rich in proteins and vegetables.";
+          exerciseTip.innerText = "30 minutes of moderate exercise daily.";
+          lifestyleTip.innerText = "Get 7-8 hours of quality sleep.";
+
+        } else {
+          bmiMessage.innerText = "Overweight";
+          needle.style.transform = "rotate(45deg)";
+
+          bmiImage.src = gender === "male" ? "/BMI calculator/images/male-overweight.jpeg" : "/BMI calculator/images/female-overweight.jpeg";
+
+          // Recommendations for Overweight
+          dietTip.innerText = "Reduce sugar & processed foods, eat more fiber.";
+          exerciseTip.innerText = "Include cardio and strength training 5 times/week.";
+          lifestyleTip.innerText = "Manage stress, ensure enough sleep, avoid late-night snacking.";
+        }
+      }
+      else if(height && !weight) {
+        bmiMessage.innerText = "Enter your weight also....!"
+        bmiMessage.style.color = "red";
+        bmiValue.innerText = "--";
+      }
+      else if(!height && weight) {
+        bmiMessage.innerText = "Enter your height also....!"
+        bmiMessage.style.color = "red";
+        bmiValue.innerText = "--";
+      }
+      else {
+        bmiMessage.innerText = "Enter your Weight and height And Click on Calculate BMI Button";
+        bmiMessage.style.color = "red";
+        bmiValue.innerText = "--";
+      }
+      if(!gender) {
+        bmiImage.src = "/BMI calculator/images/default.png"
+      }
+      /* bmiImage.src = imagePath;*/
+    }
+
+    function showGoals() {
+      const bmi = parseFloat(document.getElementById('bmi-value').innerText);
+      const goalList = document.getElementById('goal-list');
+      const goalPointsDiv = document.getElementById('goal-points');
+
+      goalList.innerHTML = ''; // Clear previous points
+
+      if (!bmicalculated) {
+        goalList.innerHTML = "<li class='text-danger'>Please calculate BMI first!</li>";
+      } else if (bmi < 18.5) {
+        // Underweight Goals
+        goalList.innerHTML = `
+          <li>🍽️ Increase daily calorie intake by 300-500 kcal.</li>
+          <li>🥛 Drink 2 glasses of milk daily.</li>
+          <li>🍗 Include protein-rich foods (eggs, chicken, beans).</li>
+          <li>🏋️‍♂️ Do light strength exercises 3 times/week.</li>
+          <li>💧 Stay hydrated (8 glasses of water daily).</li>
+          <li>🛌 Sleep minimum 8 hours daily.</li>
+        `;
+      } else if (bmi < 25) {
+        // Normal weight Goals
+        goalList.innerHTML = `
+          <li>🥗 Continue balanced diet - proteins, veggies, whole grains.</li>
+          <li>🚶‍♂️ Walk 10,000 steps daily.</li>
+          <li>🧘‍♀️ Stretch or meditate 10 mins daily.</li>
+          <li>💧 Drink 2-3 liters water daily.</li>
+          <li>🛌 Maintain 7-8 hours sleep schedule.</li>
+        `;
+      } else {
+        // Overweight Goals
+        goalList.innerHTML = `
+          <li>🥗 Reduce daily calorie intake by 500 kcal.</li>
+          <li>🚶‍♂️ Walk briskly for 30 mins daily.</li>
+          <li>🍎 Replace snacks with fruits/nuts.</li>
+          <li>🏋️‍♀️ Add cardio + strength workout 5 times/week.</li>
+          <li>💧 Drink warm water before meals.</li>
+          <li>📵 Avoid screen time 1 hour before bed.</li>
+        `;
+      }
+
+      goalPointsDiv.style.display = 'block'; // Show goals
+    }
+
+  </script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
+    }
+
+    function changeLanguage(lang) {
+        var select = document.querySelector(".goog-te-combo");
+        if (select) {
+            select.value = lang;
+            select.dispatchEvent(new Event('change'));
+        }
+    }
+</script>
+
+<!-- drop down menu -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const navbarToggler = document.getElementById("navbar-toggler");
+        const menuIcon = document.getElementById("menu-icon");
+        const navbarContent = document.getElementById("navbarContent");
+
+        navbarToggler.addEventListener("click", function () {
+            if (navbarContent.classList.contains("show")) {
+                // Close the menu
+                navbarContent.classList.remove("show");
+                menuIcon.classList.remove("fa-times");
+                menuIcon.classList.add("fa-bars");
+            } else {
+                // Open the menu
+                navbarContent.classList.add("show");
+                menuIcon.classList.remove("fa-bars");
+                menuIcon.classList.add("fa-times");
+            }
+        });
+
+        // Close menu when clicking outside (optional for better UX)
+        document.addEventListener("click", function (event) {
+            if (!navbarToggler.contains(event.target) && !navbarContent.contains(event.target)) {
+                navbarContent.classList.remove("show");
+                menuIcon.classList.remove("fa-times");
+                menuIcon.classList.add("fa-bars");
+            }
+        });
+
+        // Remove the Google Translate element if it exists
+        
+    });
+</script>
+
+<!-- translation menu -->
+<script>
+    function correctTranslations() {
+        const translations = {
+            "सुदूर": "टेलीमेडीसीन" // Replace incorrect Hindi translation with the correct one
+        };
+
+        document.querySelectorAll("*").forEach(el => {
+            if (el.childNodes.length === 1 && el.childNodes[0].nodeType === 3) {
+                let text = el.textContent.trim();
+                if (translations[text]) {
+                    el.textContent = translations[text];
+                }
+            }
+        });
+    }
+
+    // Continuously check if Google Translate modifies the page
+    function observeMutations() {
+        const observer = new MutationObserver(() => {
+            correctTranslations();
+        });
+
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", observeMutations);
+</script>
+
+<script>
+    function scrollToHospitals() {
+        let hospitalSection = document.getElementById("map1");
+        if (hospitalSection) {
+            hospitalSection.scrollIntoView({ behavior: "smooth", block: "start" });
+        } else {
+            console.error("Element with ID 'map-container' not found.");
+        }
+    }
+</script>
+<!-- Google Translate API -->
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+
+</html>

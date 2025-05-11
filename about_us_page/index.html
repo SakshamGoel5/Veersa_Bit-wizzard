@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Telemedicine Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+        .transition {
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-light text-dark">
+    <header class="bg-white shadow-sm py-3">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <!-- Logo -->
+                <a class="navbar-brand fw-bold notranslate" href="#">
+                    <span class="fs-3 text-warning">M</span><span class="fs-4">ediHub</span>
+                </a>
+
+                <!-- Navbar Toggle Button (☰ / ✖) -->
+                <button class="navbar-toggler border-0" id="navbar-toggler" type="button" aria-expanded="false">
+                    <i class="fas fa-bars fs-3" id="menu-icon"></i>
+                </button>
+
+                <!-- Navbar Links -->
+                <div class="collapse navbar-collapse" id="navbarContent">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item"><a class="nav-link text-dark" href="/">Home</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="https://medihub-ver1.vercel.app/" target="_blank">Telemedicine</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="https://medihub-chatbot.vercel.app/" target="_blank">Chatbot</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="/BMI calculator/index.html" target="_blank">BMI Buddy</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="/index.html?scrollTo=#map1" >Nearby Hospitals</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="/about_us_page/index.html">About us</a></li>
+                    </ul>
+
+                    <!-- Language Dropdown -->
+                    <div class="dropdown">
+                        <button class="btn btn-light text-primary d-flex align-items-center rounded-pill dropdown-toggle" data-bs-toggle="dropdown">
+                            <i class="fas fa-globe me-2"></i> Language
+                        </button>
+                        
+                        <!-- <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            🌍 Language
+                        </button> -->
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" onclick="changeLanguage('en')">English</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="changeLanguage('hi')">हिन्दी</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="changeLanguage('mr')">मराठी</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+<!-- Google Translate Element -->
+<div id="google_translate_element" style="display: none;"></div>
+
+
+<main class="bg-light py-5">
+    <div class="container">
+
+        <div class="mt-5">
+            <h2 class="h3 font-weight-bold mb-4 text-center">Problem Statement</h2>
+            <p class="text-muted mb-4">
+                Millions in rural and underserved areas lack access to essential healthcare, leading to preventable diseases and deaths. According to WHO, nearly half of the world’s population doesn’t have access to essential health services.
+            </p>
+            <p class="text-muted mb-4">
+                Major barriers include:
+            </p>
+            <ul class="list-unstyled text-muted mb-4">
+                <li><i class="fas fa-check-circle me-2"></i>Lack of Infrastructure – Many remote areas lack hospitals, clinics, and proper roads.</li>
+                <li><i class="fas fa-check-circle me-2"></i>Shortage of Medical Professionals – A global shortage of over 4 million doctors and nurses, with rural areas suffering the most.</li>
+                <li><i class="fas fa-check-circle me-2"></i>Low Awareness of Preventive Care – Many people lack knowledge about vaccinations, early check-ups, and mental health support.</li>
+            </ul>
+            <p class="text-muted mb-4">
+                These barriers result in untreated diseases, higher maternal and child mortality rates, and worsening health conditions. WHO reports over 5 million children under five die each year from treatable or preventable illnesses.
+            </p>
+        </div>
+
+        <div class="row align-items-center justify-content-between">
+            <div class="col-12 col-md-6 mb-4 mb-md-0">
+                <img src="https://storage.googleapis.com/a1aa/image/NJZERK5imUhLbMn4lgqVYnyMq0Zh1cYAys8qQx3dqMQ.jpg" alt="Healthcare team" class="img-fluid shadow object-fit-cover ms-5" style="width: 70%; height: 70%; border-radius: 10px;">
+            </div>
+            <div class="col-12 col-md-6">
+                <h2 class="h3 font-weight-bold mb-4 text-center">Our Mission</h2>
+                <p class="text-muted mb-4">
+                    TeleHealth transforms healthcare with AI-driven telemedicine, smart doctor assistants, and chatbots for instant support. From BMI tracking to finding nearby hospitals, we make healthcare smarter, faster, and accessible to all. Your health, our technology, your care—anytime, anywhere!
+                    <span class="text-danger">🚀</span>
+                </p>
+            </div>
+        </div>
+
+        
+
+        <div class="text-center mt-5">
+            <h2 class="h4 font-weight-bold mb-5">Why Choose Us?</h2>
+            <div class="row justify-content-around">
+                <div class="col-12 col-md-4 mb-4 mb-md-0">
+                    <i class="fas fa-user-md text-primary display-4 mb-3"></i>
+                    <h3 class="h5 font-weight-semibold mb-2">Expert Doctors</h3>
+                    <p class="text-muted">Access certified and experienced healthcare professionals.</p>
+                </div>
+                <div class="col-12 col-md-4 mb-4 mb-md-0">
+                    <i class="fas fa-clock text-primary display-4 mb-3"></i>
+                    <h3 class="h5 font-weight-semibold mb-2">24/7 Availability</h3>
+                    <p class="text-muted">Consult with doctors anytime, from anywhere.</p>
+                </div>
+                <div class="col-12 col-md-4">
+                    <i class="fas fa-shield-alt text-primary display-4 mb-3"></i>
+                    <h3 class="h5 font-weight-semibold mb-2">Secure & Confidential</h3>
+                    <p class="text-muted">We prioritize patient privacy and data security.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-5">
+            <h2 class="h4 font-weight-bold mb-3">Join Us in Transforming Healthcare</h2>
+            <p class="text-muted mb-4">Experience seamless and secure healthcare solutions from the comfort of your home.</p>
+            <button class="btn btn-primary shadow btn-lg rounded-pill" onclick="location.href='/index.html'">
+                Get Started
+            </button>
+            
+        </div>
+
+        <div class="mt-5">
+            <div class="row g-4 align-items-stretch">
+                <div class="col-12 col-md-3 h-100">
+                    <div class="bg-white p-4 rounded-lg shadow-lg text-center h-100 d-flex flex-column justify-content-between">
+                        <img alt="Boy ghost" class="w-25 h-25 rounded-circle mx-auto mb-3" height="100"
+                            src="https://storage.googleapis.com/a1aa/image/wJl-zBV4IGjiw6r2Nx9OVTWEw6qDPtX4_PaSm7_o-iA.jpg"
+                            width="100" />
+                        <p class="text-muted mb-3">
+                            Ruturaj Jawale<br>
+                            Full Stack Developer<br>
+                            Leader
+                        </p>
+                        <div class="d-flex justify-content-center gap-3">
+                            <a class="text-primary" href="https://www.linkedin.com/in/ruturaj-p-jawale" target="_blank">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a class="text-dark" href="https://github.com/Ruturaj-jawale" target="_blank">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="col-12 col-md-3 h-100">
+                    <div class="bg-white p-4 rounded-lg shadow-lg text-center h-100 d-flex flex-column justify-content-between">
+                        <img alt="Girl ghost" class="w-25 h-25 rounded-circle mx-auto mb-3" height="100"
+                            src="https://storage.googleapis.com/a1aa/image/mcP1DsS_SlSj6ttVdEF4DSEu_R1vOXfqPnZ3fFuuzSU.jpg"
+                            width="100" />
+                        <p class="text-muted mb-3">
+                            Mayur Koshti<br>
+                            Full Stack developer<br>
+                            Co-leader
+                        </p>
+                        <div class="d-flex justify-content-center gap-3">
+                            <a class="text-primary" href="https://www.linkedin.com/in/mayur-koshti-68484a322/" target="_blank">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a class="text-dark" href="https://github.com/Mayur0031" target="_blank">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="col-12 col-md-3 h-100">
+                    <div class="bg-white p-4 rounded-lg shadow-lg text-center h-100 d-flex flex-column justify-content-between">
+                        <img alt="Boy ghost" class="w-25 h-25 rounded-circle mx-auto mb-3" height="100"
+                            src="https://storage.googleapis.com/a1aa/image/wJl-zBV4IGjiw6r2Nx9OVTWEw6qDPtX4_PaSm7_o-iA.jpg"
+                            width="100" />
+                        <p class="text-muted mb-3">
+                            Gaytri Potdar<br>
+                            Ai Engineer<br>
+                            Full stack Developer
+                            
+
+                        </p>
+                        <div class="d-flex justify-content-center gap-3">
+                            <a class="text-primary" href="https://www.linkedin.com/in/gayatri-potdar-7aa99b301" target="_blank">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a class="text-dark" href="https://github.com/Gayatri-Potdar" target="_blank">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="col-12 col-md-3 h-100">
+                    <div class="bg-white p-4 rounded-lg shadow-lg text-center h-100 d-flex flex-column justify-content-between">
+                        <img alt="Girl ghost" class="w-25 h-25 rounded-circle mx-auto mb-3" height="100"
+                            src="https://storage.googleapis.com/a1aa/image/mcP1DsS_SlSj6ttVdEF4DSEu_R1vOXfqPnZ3fFuuzSU.jpg"
+                            width="100" />
+                        <p class="text-muted mb-3">
+                            Kunal Malviya<br>
+                            UI/UX designer<br>
+                            frontend Developer
+                        </p>
+                        <div class="d-flex justify-content-center gap-3">
+                            <a class="text-primary" href="https://www.linkedin.com/in/kunal-malviya-656528257/" target="_blank">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a class="text-dark" href="https://github.com/KunalMalviya2" target="_blank">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</main>
+
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/" class="text-white text-decoration-none">Home</a></li>
+                        <li><a class="text-white text-decoration-none" href="https://medihub-ver1.vercel.app/" target="_blank">Telemedicine</a></li>
+                        <li><a class="text-white text-decoration-none" href="https://medihub-chatbot.vercel.app/" target="_blank">Chatbot</a></li>
+                        <li><a class="text-white text-decoration-none"href="\BMI calculator\index.html" target="_blank">BMI Buddy</a></li>
+                        <li><a class="text-white text-decoration-none" href="/index.html?scrollTo=#map1">NearBy Hospital</a></li>
+                        <li><a href="/about_us_page/index.html" class="text-white text-decoration-none">About</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>Connect With Us</h5>
+                    <div>
+                        <a href="#" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <h5>Contact</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-envelope me-2"></i> contact :-medihub661@gmail.com</li>
+                        <li><i class="fas fa-phone me-2"></i> +91 12345 67891</li>
+                        <li><i class="fas fa-map-marker-alt me-2"></i> 123 Health Street, Medical District</li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>Legal</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white text-decoration-none">Privacy Policy</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="text-center mt-3">
+                <p>© 2025 TeleHealth. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- language change -->
+        <script type="text/javascript">
+            function googleTranslateElementInit() {
+                new google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
+            }
+        
+            function changeLanguage(lang) {
+                var select = document.querySelector(".goog-te-combo");
+                if (select) {
+                    select.value = lang;
+                    select.dispatchEvent(new Event('change'));
+                }
+            }
+        </script>
+    
+        <!-- drop down menu -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const navbarToggler = document.getElementById("navbar-toggler");
+                const menuIcon = document.getElementById("menu-icon");
+                const navbarContent = document.getElementById("navbarContent");
+        
+                navbarToggler.addEventListener("click", function () {
+                    if (navbarContent.classList.contains("show")) {
+                        // Close the menu
+                        navbarContent.classList.remove("show");
+                        menuIcon.classList.remove("fa-times");
+                        menuIcon.classList.add("fa-bars");
+                    } else {
+                        // Open the menu
+                        navbarContent.classList.add("show");
+                        menuIcon.classList.remove("fa-bars");
+                        menuIcon.classList.add("fa-times");
+                    }
+                });
+        
+                // Close menu when clicking outside (optional for better UX)
+                document.addEventListener("click", function (event) {
+                    if (!navbarToggler.contains(event.target) && !navbarContent.contains(event.target)) {
+                        navbarContent.classList.remove("show");
+                        menuIcon.classList.remove("fa-times");
+                        menuIcon.classList.add("fa-bars");
+                    }
+                });
+        
+                // Remove the Google Translate element if it exists
+                
+            });
+        </script>
+        
+        <!-- translation menu -->
+        <script>
+            function correctTranslations() {
+                const translations = {
+                    "सुदूर": "टेलीमेडीसीन" // Replace incorrect Hindi translation with the correct one
+                };
+        
+                document.querySelectorAll("*").forEach(el => {
+                    if (el.childNodes.length === 1 && el.childNodes[0].nodeType === 3) {
+                        let text = el.textContent.trim();
+                        if (translations[text]) {
+                            el.textContent = translations[text];
+                        }
+                    }
+                });
+            }
+        
+            // Continuously check if Google Translate modifies the page
+            function observeMutations() {
+                const observer = new MutationObserver(() => {
+                    correctTranslations();
+                });
+        
+                observer.observe(document.body, {
+                    childList: true,
+                    subtree: true
+                });
+            }
+        
+            document.addEventListener("DOMContentLoaded", observeMutations);
+        </script>
+
+        <script>
+            function scrollToHospitals() {
+                let hospitalSection = document.getElementById("map1");
+                if (hospitalSection) {
+                    hospitalSection.scrollIntoView({ behavior: "smooth", block: "start" });
+                } else {
+                    console.error("Element with ID 'map-container' not found.");
+                }
+            }
+        </script>
+        <!-- Google Translate API -->
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</html>

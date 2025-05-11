@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>TeleHealth</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: visible !important;
+            height: auto !important;
+        }
+
+        /*#mapFrame {
+            width: 100vw;
+            height: 100vh;
+            border: none;
+        }*/
+
+        /* map section css*/
+        /* Center map with 80% width and margin */
+        #map-container {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        #map {
+            height: 500px;
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        /* Table container below map */
+        #hospital-table-container {
+            width: 80%;
+            margin: 20px auto;
+        }
+
+        .table-container {
+            max-height: 400px;
+            /* Set max height for scrolling */
+            overflow-y: auto;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #f8f9fa;
+            cursor: pointer;
+        }
+
+        .pagination {
+            margin-top: 20px;
+        }
+
+        .search-bar {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body class="bg-light ">
+    <!-- Bootstrap Navbar -->
+    <header class="bg-white shadow-sm py-3">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <!-- Logo -->
+                <a class="navbar-brand fw-bold notranslate" href="#">
+                    <span class="fs-3 text-warning">T</span><span class="fs-4">eleHealth</span>
+                </a>
+
+                <button class="navbar-toggler border-0" id="navbar-toggler" type="button" aria-expanded="false">
+                    <i class="fas fa-bars fs-3" id="menu-icon"></i>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarContent">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item"><a class="nav-link text-dark" href="/">Home</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="https://medihub-ver1.vercel.app/"
+                                target="_blank">Telemedicine</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="https://medihub-chatbot.vercel.app/"
+                                target="_blank">Chatbot</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="/BMI calculator/index.html"
+                                target="_blank">BMI Buddy</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" onclick="scrollToHospitals()">Nearby
+                                Hospitals</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="/about_us_page/index.html">About us</a>
+                        </li>
+                    </ul>
+
+                    <!-- Language Dropdown -->
+                    <div class="dropdown">
+                        <button
+                            class="btn btn-light text-primary d-flex align-items-center rounded-pill dropdown-toggle"
+                            data-bs-toggle="dropdown">
+                            <i class="fas fa-globe me-2"></i> Language
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" onclick="changeLanguage('en')">English</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="changeLanguage('hi')">हिन्दी</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="changeLanguage('mr')">मराठी</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+
+    <!-- Google Translate Element -->
+    <div id="google_translate_element" style="display: none;"></div>
+
+
+
+    <main class="container py-5 d-md-flex align-items-center">
+        <div class="col-md-6">
+            <h1 class="fw-bold text-dark">Your Health, Our Priority</h1>
+            <p class="text-secondary">Experience healthcare reimagined with AI-powered solutions and telemedicine
+                services.</p>
+            <button class="btn btn-dark mt-3" onclick="window.open('https://medihub-ver1.vercel.app/', '_blank')">Start
+                Consultation</button>
+        </div>
+        
+    </main>
+    <div class="container py-4">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card p-3">
+                    <div class="mb-3"><i class="fas fa-info-circle fs-2 text-dark"></i></div>
+                    <h2 class="fs-5 fw-semibold">About Us</h2>
+                    <p class="text-secondary">Revolutionizing healthcare access through technology and innovation.</p>
+                    <button class="btn btn-dark"  onclick="window.open('/about_us_page/index.html')">Learn More</button>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-3">
+                    <div class="mb-3"><i class="fas fa-video fs-2 text-dark"></i></div>
+                    <h2 class="fs-5 fw-semibold">Telemedicine</h2>
+                    <p class="text-secondary">Connect with healthcare professionals from the comfort of your home.</p>
+                    <button class="btn btn-dark"
+                        onclick="window.location.href='./tele.html'"">Book Now</button>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-3">
+                    <div class="mb-3"><i class="fas fa-robot fs-2 text-dark"></i></div>
+                    <h2 class="fs-5 fw-semibold">AI Chatbot</h2>
+                    <p class="text-secondary">Get instant answers to your health queries with our AI assistant.</p>
+                    <button class="btn btn-dark" onclick="window.open('https://medihub-chatbot.vercel.app/')">Chat
+                        Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- map section -->
+    <div class="container text-center mt-5" id="map1">
+        <h2 class="mb-3">Find Nearby Hospitals and Clinics</h2>
+
+        <!-- Buttons for User Location and Searching -->
+        <button class="btn btn-success mb-3" onclick="getUserLocation()">📍 Use My Location</button>
+
+        <!-- <input type="text" id="manual-location" class="form-control d-inline-block w-50 mb-3" placeholder="Enter location (e.g., Mumbai)">
+<button id="manual-search-btn" class="btn btn-secondary mb-3" onclick="searchByEnteredLocation()">🔍 Search by Location</button> -->
+        <button id="search-btn" class="btn btn-primary mb-3" onclick="findNearbyHospitals()" disabled>🔍 Search Nearby
+            Hospitals</button>
+
+        <!-- Map Section -->
+        <div id="map-container">
+            <div class="card shadow">
+                <div class="card-body">
+                    <div id="map"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hospital Table Section -->
+        <div id="hospital-table-container">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h5 class="card-title">🏥 Nearby Hospitals</h5>
+
+                    <!-- Search Bar
+                <div class="search-bar">
+                    <input type="text" id="search-input" class="form-control" placeholder="Search by name, type, or specialization" oninput="filterHospitals()">
+                </div> -->
+
+                    <!-- Table with scrollable container -->
+                    <div class="table-container">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th onclick="sortTable(0)">Name</th>
+                                    <th>Contact</th>
+                                    <th>Address</th>
+                                    <th onclick="sortTable(3)">Distance</th>
+
+
+                                </tr>
+                            </thead>
+                            <tbody id="hospital-table-body">
+                                <!-- Hospital rows will be dynamically populated here -->
+                                <tr>
+                                    <td colspan="6" class="text-muted">No hospitals found. Search to see results.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center" id="pagination">
+                            <!-- Pagination links will be dynamically populated here -->
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hospital Details Modal -->
+    <div class="modal fade" id="hospitalModal" tabindex="-1" aria-labelledby="hospitalModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="hospitalModalLabel">🏥 Hospital Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Name:</strong> <span id="modal-name"></span></p>
+                    <!-- <p><strong>Type:</strong> <span id="modal-type"></span></p>
+                <p><strong>Specialization:</strong> <span id="modal-specialization"></span></p> -->
+                    <p><strong>Contact:</strong> <span id="modal-contact"></span></p>
+                    <p><strong>Address:</strong> <span id="modal-address"></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="redirect-btn">📍 Get Directions</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/" class="text-white text-decoration-none">Home</a></li>
+                        <li><a class="text-white text-decoration-none" href="https://medihub-ver1.vercel.app/"
+                                target="_blank">Telemedicine</a></li>
+                        <li><a class="text-white text-decoration-none" href="https://medihub-chatbot.vercel.app/"
+                                target="_blank">Chatbot</a></li>
+                        <li><a class="text-white text-decoration-none" href="\BMI calculator\index.html"
+                                target="_blank">BMI Buddy</a></li>
+                        <li><a class="text-white text-decoration-none" onclick="scrollToHospitals()">NearBy Hospital</a>
+                        </li>
+                        <li><a href="/about_us_page/index.html" class="text-white text-decoration-none">About</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>Connect With Us</h5>
+                    <div>
+                        <a href="#" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <h5>Contact</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-envelope me-2"></i> contact :abes@gmail.com</li>
+                        <li><i class="fas fa-phone me-2"></i> +91 99999 99999</li>
+                        <li><i class="fas fa-map-marker-alt me-2"></i> Noida Electronic City, Uttar Pradesh</li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>Legal</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white text-decoration-none">Privacy Policy</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="text-center mt-3">
+                <p>© 2025 TeleHealth. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+
+    <!-- language change -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
+        }
+
+        function changeLanguage(lang) {
+            var select = document.querySelector(".goog-te-combo");
+            if (select) {
+                select.value = lang;
+                select.dispatchEvent(new Event('change'));
+            }
+        }
+    </script>
+
+    <!-- drop down menu -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const navbarToggler = document.getElementById("navbar-toggler");
+            const menuIcon = document.getElementById("menu-icon");
+            const navbarContent = document.getElementById("navbarContent");
+
+            navbarToggler.addEventListener("click", function () {
+                if (navbarContent.classList.contains("show")) {
+                    // Close the menu
+                    navbarContent.classList.remove("show");
+                    menuIcon.classList.remove("fa-times");
+                    menuIcon.classList.add("fa-bars");
+                } else {
+                    // Open the menu
+                    navbarContent.classList.add("show");
+                    menuIcon.classList.remove("fa-bars");
+                    menuIcon.classList.add("fa-times");
+                }
+            });
+
+            // Close menu when clicking outside (optional for better UX)
+            document.addEventListener("click", function (event) {
+                if (!navbarToggler.contains(event.target) && !navbarContent.contains(event.target)) {
+                    navbarContent.classList.remove("show");
+                    menuIcon.classList.remove("fa-times");
+                    menuIcon.classList.add("fa-bars");
+                }
+            });
+
+            // Remove the Google Translate element if it exists
+
+        });
+    </script>
+
+    <!-- translation menu -->
+    <script>
+        function correctTranslations() {
+            const translations = {
+                "सुदूर": "टेलीमेडीसीन" // Replace incorrect Hindi translation with the correct one
+            };
+
+            document.querySelectorAll("*").forEach(el => {
+                if (el.childNodes.length === 1 && el.childNodes[0].nodeType === 3) {
+                    let text = el.textContent.trim();
+                    if (translations[text]) {
+                        el.textContent = translations[text];
+                    }
+                }
+            });
+        }
+
+        // Continuously check if Google Translate modifies the page
+        function observeMutations() {
+            const observer = new MutationObserver(() => {
+                correctTranslations();
+            });
+
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", observeMutations);
+    </script>
+
+    <script>
+        function scrollToHospitals() {
+            let hospitalSection = document.getElementById("map1");
+            if (hospitalSection) {
+                hospitalSection.scrollIntoView({ behavior: "smooth", block: "start" });
+            } else {
+                console.error("Element with ID 'map-container' not found.");
+            }
+        }
+    </script>
+
+
+    <!-- Google Translate API -->
+    <script type="text/javascript"
+        src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,52 @@
+.step { display: none; }
+.step.active { display: block; }
+
+.appointment-container {
+  display: flex;
+  gap: 2rem;
+  padding: 1rem;
+}
+
+.details, .date-picker, .time-picker {
+  flex: 1;
+}
+
+.date-grid, .time-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.date-box, .time-grid button {
+  padding: 1rem;
+  border: 1px solid #007bff;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.time-section {
+  margin-top: 1rem;
+}
+
+
+.patient-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+}
+
+input, textarea {
+  flex: 1;
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}

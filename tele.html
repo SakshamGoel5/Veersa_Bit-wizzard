@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Appointment Booking</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fff;
+      margin: 0;
+      padding: 2rem;
+    }
+    .steps {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+    }
+    .steps div {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #777;
+    }
+    .steps .active {
+      color: #007bff;
+    }
+    .steps .done::before, .steps .active::before {
+      content: "\2713";
+      display: inline-block;
+      background: #007bff;
+      color: #fff;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      text-align: center;
+    }
+    .step {
+      display: none;
+    }
+    .step.active {
+      display: block;
+    }
+    .appointment-container, .patient-form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .appointment-container > div, .form-row {
+      flex: 1 1 30%;
+    }
+    .date-grid, .time-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .date-box, .time-grid button {
+      padding: 1rem;
+      border: 1px solid #007bff;
+      border-radius: 6px;
+      cursor: pointer;
+      text-align: center;
+      background: #fff;
+      transition: all 0.3s;
+      outline: none;
+    }
+    .date-box:hover, .time-grid button:hover,
+    .date-box:focus, .time-grid button:focus {
+      border-color: #0056b3;
+      background-color: #f0f8ff;
+    }
+    .date-box.selected, .time-grid button.selected {
+      background-color: #007bff;
+      color: #fff;
+      border-color: #007bff;
+    }
+    .form-row input, .form-row textarea, .form-row select, .form-row button {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-top: 0.5rem;
+    }
+    button.next-btn {
+      margin-top: 1rem;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="steps">
+    <div class="done">1 Select Appointment Date & Time</div>
+    <div class="active">2 Patient Information</div>
+    <div>3 Payment</div>
+  </div>
+
+  <div class="step step-1 active">
+    <h2>Select Appointment Date & Time</h2>
+    <div class="appointment-container">
+      <div>
+        <p>With Doctor</p>
+        <p>30 Min</p>
+        <p>Sylhet, Bangladesh</p>
+        <p>Zoom Meeting</p>
+      </div>
+      <div>
+        <h3>Pick a Date</h3>
+        <div class="date-grid" id="date-grid"></div>
+      </div>
+      <div>
+        <h3>Pick a Time</h3>
+        <div class="time-grid" id="time-grid">
+          <button>08:00 AM</button>
+          <button>09:00 AM</button>
+          <button>10:00 AM</button>
+          <button>11:00 AM</button>
+          <button>02:00 PM</button>
+          <button>03:00 PM</button>
+        </div>
+      </div>
+    </div>
+    <button class="next-btn" onclick="goToStep(2)">Next</button>
+  </div>
+
+  <div class="step step-2">
+    <h2>Patient Information</h2>
+    <form class="patient-form">
+      <label><input type="checkbox" /> Already Have an Account?</label>
+      <div class="form-row">
+        <input type="text" placeholder="First Name" />
+        <input type="text" placeholder="Last Name" />
+      </div>
+      <div class="form-row">
+        <input type="email" placeholder="Email" />
+        <input type="tel" placeholder="Phone" />
+      </div>
+      <div class="form-row">
+        <textarea placeholder="Reason for Visit"></textarea>
+        <textarea placeholder="Description"></textarea>
+      </div>
+      <div class="form-row">
+        <input type="text" placeholder="Address" />
+      </div>
+      <button class="next-btn" type="button" onclick="goToStep(3)">Next</button>
+    </form>
+  </div>
+
+  <div class="step step-3">
+    <h2>Payment</h2>
+    <div class="form-row">
+      <input type="text" placeholder="Cardholder Name" />
+      <input type="text" placeholder="Card Number" />
+    </div>
+    <div class="form-row">
+      <input type="text" placeholder="Expiry Date (MM/YY)" />
+      <input type="text" placeholder="CVV" />
+    </div>
+    <button class="next-btn">Pay Now</button>
+  </div>
+
+  <script>
+    function goToStep(stepNum) {
+      document.querySelectorAll(".step").forEach(el => el.classList.remove("active"));
+      document.querySelector(`.step-${stepNum}`).classList.add("active");
+      const steps = document.querySelectorAll(".steps div");
+      steps.forEach((step, index) => {
+        if (index < stepNum - 1) step.className = "done";
+        else if (index === stepNum - 1) step.className = "active";
+        else step.className = "";
+      });
+    }
+
+    // Dynamically generate today + next 3 days
+    const dateGrid = document.getElementById("date-grid");
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const weekdayNames = ["Sunday", "Monday", "Tuesday", "Wednesday",
+                          "Thursday", "Friday", "Saturday"];
+
+    for (let i = 0; i < 4; i++) {
+      const date = new Date();
+      date.setDate(date.getDate() + i);
+      const monthDay = `${monthNames[date.getMonth()]} ${date.getDate()}`;
+      const weekday = weekdayNames[date.getDay()];
+      const box = document.createElement("div");
+      box.className = "date-box";
+      box.innerHTML = `${monthDay}<br><strong>${weekday}</strong>`;
+      box.tabIndex = 0;
+      box.dataset.date = date.toISOString().split('T')[0];
+
+      box.addEventListener("click", () => {
+        document.querySelectorAll(".date-box").forEach(el => el.classList.remove("selected"));
+        box.classList.add("selected");
+        console.log("Selected date:", box.dataset.date);
+      });
+
+      dateGrid.appendChild(box);
+    }
+
+    // Time selection
+    const timeButtons = document.querySelectorAll(".time-grid button");
+    timeButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        timeButtons.forEach(b => b.classList.remove("selected"));
+        btn.classList.add("selected");
+        console.log("Selected time:", btn.textContent);
+      });
+    });
+  </script>
+</body>
+</html>
