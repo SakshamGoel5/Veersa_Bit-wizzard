@@ -35,6 +35,7 @@ To run this project locally, follow these steps:
 Pulse Health/
 │
 ├── index.html                 # Main landing page with map and navigation
+│
 ├── /images/                   # Folder containing images used in the UI
 │   └── image.png              # Example image shown in the homepage
 │
@@ -42,17 +43,17 @@ Pulse Health/
 │   └── index.html            # BMI calculator web page
 │
 ├── /about_us_page/           # About Us section
-│   └── index.html            # Info about the MediHub platform
+│   └── index.html            # Info about the Pulse Health platform
 │
 ├── /scripts/                 # JavaScript files for maps, hospital search, etc.
 │   └── map.js                # Handles hospital search and map logic
-│  
 │
-├── /styles/                  #CSS 
-│   └── main.css             
+├── /styles/                  # CSS styling for the app
+│   └── main.css              
 │
 ├── README.md                 # Project documentation
 └── ...
+
 
 ### Map Integration
 The Nearby Hospitals feature utilizes the Google Maps API to provide users with a visual representation of hospitals and clinics in their vicinity. Here’s how it works:
